@@ -150,29 +150,42 @@ class Lingo {
     }
 
     handleKey(pressedKey) {
+
+        // If the game is done, don't handle keys
         if (this.done()) {
             return;
         }
     
+        /*
+            OPDRACHT 5
+
+            Herschrijf de onderstaande 3 if-statements naar een switch
+        */
+
+        // If the Backspace is pressed, remove a letter
         if (pressedKey === "Backspace") {
             this.removeLetter();
             return;
         }
     
+        // If the Escape is pressed, reset the game
         if (pressedKey === "Escape") {
             this.reset();
             return;
         }
     
+        // If the Enter is pressed, check the word
         if (pressedKey === "Enter") {
             this.checkWord();
             return;
         }
     
         let isLetter = pressedKey.match(/[a-z]/gi);
+        // If no letter is pressed, do nothing
         if (!isLetter || isLetter.length > 1) {
             return;
     
+        // Else add the letter
         } else {
             this.addLetter(pressedKey);
         }
