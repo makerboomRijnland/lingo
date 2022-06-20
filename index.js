@@ -22,7 +22,9 @@ class Lingo {
             Zorg ervoor dat this.word een random string uit de array WORDS krijgt
         */
 
-        this.word = WORDS[0];
+        
+        let wordIndex = Math.floor( Math.random() * WORDS.length );
+        this.word = WORDS[wordIndex];
 
         /*
             OPDRACHT 2
@@ -30,10 +32,24 @@ class Lingo {
             voor elk element in de variabele rows
                 voor elk element met de class 'letter': row.getElementsByClassName('letter')
                     maak de innerHTML leeg.
+
             verander this.letterIndex naar 0
             verander this.rowIndex naar 0
         */
        let rows = this.board.getElementsByClassName('row');
+
+       for(let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+           let letters = rows[rowIndex].getElementsByClassName('letter');
+            
+           for(let letterIndex = 0; letterIndex < letters.length; letterIndex++) {
+                letters[letterIndex].innerHTML = "";
+                letters[letterIndex].style.backgroundColor = "";
+            }
+
+       }
+
+       this.letterIndex = 0;
+       this.rowIndex = 0;
     }
 
     done() {
@@ -61,6 +77,10 @@ class Lingo {
     }
 
     removeLetter() {
+        if(this.letterIndex <= 0) {
+            return;
+        }
+
         // Get the HTML element of the current row
         let row = this.board.getElementsByClassName("row")[this.rowIndex];
         // Get the HTML element of the current letter
@@ -74,7 +94,10 @@ class Lingo {
                 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop
             - Verlaag this.letterIndex met 1
         */
-       
+
+        box.innerHTML = "";
+        this.guess.pop();
+        this.letterIndex -= 1;
     }
 
     checkWord() {
@@ -147,14 +170,13 @@ class Lingo {
             Als het spel klaar is HINT: this.done()
                 - reset het spel
         */
+
+        if(this.done()) {
+            this.reset();
+        }
     }
 
     handleKey(pressedKey) {
-
-        // If the game is done, don't handle keys
-        if (this.done()) {
-            return;
-        }
     
         /*
             OPDRACHT 5
@@ -162,21 +184,25 @@ class Lingo {
             Herschrijf de onderstaande 3 if-statements naar een switch
         */
 
-        // If the Backspace is pressed, remove a letter
-        if (pressedKey === "Backspace") {
-            this.removeLetter();
-            return;
-        }
-    
-        // If the Escape is pressed, reset the game
-        if (pressedKey === "Escape") {
-            this.reset();
-            return;
-        }
-    
-        // If the Enter is pressed, check the word
-        if (pressedKey === "Enter") {
-            this.checkWord();
+        switch(pressedKey) {
+            case "Backspace":
+                this.removeLetter();
+                return;
+                break;
+
+            case "Escape":
+                this.reset();
+                return;
+                break;
+
+            case "Enter":
+                this.checkWord();
+                return;
+                break;
+        } 
+
+        // If the game is done, don't handle keys
+        if (this.done()) {
             return;
         }
     
